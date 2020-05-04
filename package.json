@@ -1,0 +1,22 @@
+{
+  "name": "cro",
+  "version": "0.0.1",
+  "description": "a simple cro system that uses dropservicing",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alpah121/cro.git"
+  },
+  "keywords": [
+    "cro"
+  ],
+  "author": "jacob",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alpah121/cro/issues"
+  },
+  "homepage": "https://github.com/alpah121/cro#readme"
+}
