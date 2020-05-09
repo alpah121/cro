@@ -51,7 +51,8 @@ return (compareTo) =>
 }
 
 module.exports.add = async (req, res) => {
-	//check that item id exists in table
+if (typeof req.body != "undefined" && req.body.id && req.body.qty)
+	{
 	let id = connection.escape(req.body.id);
 	let qty = connection.escape(req.body.qty);
 	let existInTable = await sql("SELECT * FROM products WHERE ID='" + id + "';"); 
@@ -60,6 +61,45 @@ module.exports.add = async (req, res) => {
 		//add number to session
 		req.session.items.push({"id" : id,"qty" : qty});
 		}
-	};
+	}
+};
 
-module.exports.
+function changeQty(selector, toQty)
+{
+return (item) =>
+	{
+	if (item.id == selector)
+		{
+		return {"id" : id, "qty" : toQty};	
+		}
+	else
+		{
+		return item;	
+		}
+	}
+}
+
+function removeItem(id)
+{
+	
+}
+
+module.exports.update = async (req, res) => {
+if (typeof req.body != "undefined" && req.body.id && req.body.qty)
+	{
+	let id = connection.escape(req.body.id);
+	let qty = connection.escape(req.body.qty);
+	let existInTable = await sql("SELECT * FROM products WHERE ID='" + id + "';");
+	if (existInTable.length == 1 && req.session.items.filter(compare(id)).length == 1 && !isNaN(qty))
+		{
+		if (qty > 0)
+			{
+				
+			}
+		else
+			{
+				
+			}
+		}
+	}
+};
