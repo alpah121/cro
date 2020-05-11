@@ -81,7 +81,10 @@ return (item) =>
 
 function removeItem(id)
 {
-	
+return (item) => 
+	{
+	return item.id != id;	
+	}	
 }
 
 module.exports.update = async (req, res) => {
@@ -94,12 +97,52 @@ if (typeof req.body != "undefined" && req.body.id && req.body.qty)
 		{
 		if (qty > 0)
 			{
-				
+			req.session.items = req.session.items.map(changeQty(id, qty));	
+			res.json({"hasError": false, "message": "successfully changed quantity of item"});
 			}
 		else
 			{
-				
+			req.session.items = req.session.items.filter(removeItem(id));	
+			res.json({"hasError": false, "message": "successfully removed item from cart"});
 			}
+		}
+	else
+		{
+		res.json({"hasError": true, "message": "an error occured."});	
 		}
 	}
 };
+
+module.exports.total = (req, res) => {
+if (typeof req.session.items != "undefined" && req.session.items.length >= 1)
+	{
+	res.render('total', {"items" : req.session.items});	
+	}
+else
+	{
+	res.redirect('/pricing');	
+	}
+}
+
+module.exports.success = (req, res) => {
+const sig = request.headers['stripe-signature'];
+
+let event;
+
+try {
+	event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
+	} 
+catch(err)
+	{
+	return response.status(400).send('Webhook Error: ${err.message}');	
+	}
+	
+if (event.type === 'checkout.session.completed')
+	{
+	const session = event.data.object;
+	
+	//email to download the digital product
+	console.log(session);
+	}
+response.json({received: true});
+}
